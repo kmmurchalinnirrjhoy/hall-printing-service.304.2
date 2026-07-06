@@ -8,48 +8,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy-deep:#0a1730;
-    --navy-mid:#122a52;
-    --card:#132b56;
-    --line:#28416f;
-    --gold-1:#ffe08a;
-    --gold-2:#ffb238;
-    --gold-3:#ff8a1f;
-    --text-hi:#f4f7ff;
-    --text-lo:#93a6cf;
-    --text-dim:#5f74a0;
+    --bg-1:#eaf7f1;
+    --bg-2:#f5fbf8;
+    --card:#ffffff;
+    --line:#dcefe4;
+    --green-1:#0d3b2a;
+    --green-2:#146c43;
+    --accent:#16a34a;
+    --accent-dark:#0f9d58;
+    --dark-bar:#10241c;
+    --text-hi:#10241c;
+    --text-lo:#5b7768;
+    --text-dim:#8aa79a;
     --danger:#ff6b6b;
-    --ok:#57d99a;
+    --ok:#16a34a;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:linear-gradient(180deg, var(--navy-deep) 0%, #0d1c3c 45%, #0a1730 100%);
+    background:linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 45%, var(--bg-1) 100%);
     min-height:100vh;
     font-family:'Inter',sans-serif;
     color:var(--text-hi);
   }
   .wrap{max-width:420px; margin:0 auto; padding:0 16px 50px;}
 
-  .hero{text-align:center; padding:28px 0 10px;}
+  .hero{
+    text-align:center; padding:30px 20px 24px; margin:0 -16px 14px;
+    background:linear-gradient(135deg, var(--green-1) 0%, var(--green-2) 100%);
+    border-radius:0 0 22px 22px; color:#fff;
+  }
   .hero .logo{font-size:34px;}
   .hero h1{
     font-family:'Baloo 2', sans-serif; font-weight:800;
-    color:var(--gold-1); font-size:19px; margin:8px 0 0;
+    color:#ffffff; font-size:19px; margin:8px 0 0;
   }
   .hero p{
     font-family:'Baloo 2', sans-serif; font-weight:600;
-    color:var(--gold-1); letter-spacing:.03em; font-size:13.5px;
+    color:#d7f3e3; letter-spacing:.03em; font-size:13.5px;
     margin:8px 0 0; opacity:.9;
   }
   .hero .sub{
-    color:var(--text-lo); font-size:12.5px; font-weight:400;
+    color:#c3e6d4; font-size:12.5px; font-weight:400;
     max-width:340px; margin:8px auto 0; line-height:1.6;
   }
 
   .card{
     background:var(--card); border:1px solid var(--line); border-radius:18px;
-    padding:18px; margin-top:14px;
+    padding:18px; margin-top:14px; box-shadow:0 4px 18px rgba(16,36,28,.05);
   }
 
   label{display:block; font-size:12px; color:var(--text-lo); margin:14px 0 6px; font-weight:600;}
@@ -57,37 +63,37 @@
 
   input[type=text], select{
     width:100%; padding:12px 13px; border-radius:11px;
-    background:#0d1e40; border:1px solid var(--line); color:var(--text-hi);
+    background:#f4faf7; border:1px solid var(--line); color:var(--text-hi);
     font-family:'Inter',sans-serif; font-size:14.5px; outline:none; appearance:none;
   }
-  input[type=text]:focus, select:focus{border-color:var(--gold-2);}
+  input[type=text]:focus, select:focus{border-color:var(--accent);}
   select{
-    background-image:linear-gradient(45deg, transparent 50%, var(--gold-2) 50%), linear-gradient(135deg, var(--gold-2) 50%, transparent 50%);
+    background-image:linear-gradient(45deg, transparent 50%, var(--accent) 50%), linear-gradient(135deg, var(--accent) 50%, transparent 50%);
     background-position:calc(100% - 18px) center, calc(100% - 13px) center;
     background-size:5px 5px, 5px 5px; background-repeat:no-repeat; cursor:pointer;
   }
 
   .checkrow{
     display:flex; align-items:flex-start; gap:10px; margin-top:16px;
-    padding:12px 13px; background:#0d1e40; border:1px solid var(--line); border-radius:11px;
+    padding:12px 13px; background:#f2fbf6; border:1px solid var(--line); border-radius:11px;
     cursor:pointer;
   }
-  .checkrow input{margin-top:2px; width:16px; height:16px; accent-color:var(--gold-2); flex-shrink:0;}
+  .checkrow input{margin-top:2px; width:16px; height:16px; accent-color:var(--accent); flex-shrink:0;}
   .checkrow .ctext{font-size:13px; font-weight:600; color:var(--text-hi);}
   .checkrow .csub{font-size:11.5px; color:var(--text-dim); margin-top:2px; line-height:1.5;}
 
   .dropzone{
     margin-top:16px; border:1.5px dashed var(--line); border-radius:14px; padding:26px 16px;
     text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
-    background:rgba(255,255,255,.015);
+    background:#f4fbf8;
   }
-  .dropzone.drag{border-color:var(--gold-2); background:rgba(255,178,56,.06);}
+  .dropzone.drag{border-color:var(--accent); background:rgba(22,163,74,.06);}
   .dropzone .ic{font-size:26px; margin-bottom:8px; display:block;}
   .dropzone .t1{font-size:13.5px; font-weight:600;}
   .dropzone .t2{font-size:11.5px; color:var(--text-dim); margin-top:4px;}
   .dropzone .t3{
     display:inline-block; margin-top:8px; font-size:10.5px; font-weight:700;
-    color:var(--gold-2); background:rgba(255,178,56,.1); border:1px solid rgba(255,178,56,.3);
+    color:var(--accent-dark); background:rgba(22,163,74,.1); border:1px solid rgba(22,163,74,.3);
     border-radius:20px; padding:3px 10px;
   }
 
@@ -96,7 +102,7 @@
   .file-card:first-child{margin-top:16px;}
   .file-head{
     display:flex; align-items:center; justify-content:space-between;
-    background:#0d1e40; border:1px solid var(--line); border-radius:11px 11px 0 0;
+    background:#f4fbf8; border:1px solid var(--line); border-radius:11px 11px 0 0;
     padding:11px 13px; font-size:13px;
   }
   .file-head .fname{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:210px; font-weight:600;}
@@ -107,30 +113,30 @@
 
   .file-body{
     border:1px solid var(--line); border-top:none; border-radius:0 0 11px 11px;
-    padding:14px 13px 4px;
+    padding:14px 13px 4px; background:#ffffff;
   }
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
   .field-mini label{margin:0 0 6px;}
   .stepper{display:flex; align-items:center; gap:8px;}
   .stepper button{
     width:36px; height:38px; border-radius:9px; border:1px solid var(--line);
-    background:#0d1e40; color:var(--gold-1); font-size:17px; cursor:pointer;
+    background:#f4faf7; color:var(--accent-dark); font-size:17px; cursor:pointer;
   }
   .stepper input{width:100%; text-align:center; padding:9px 4px;}
 
   .coverage-badge{
     margin:12px 0 6px; font-size:12px; color:var(--text-lo);
-    background:#0d1e40; border:1px solid var(--line); border-radius:9px;
+    background:#eefaf3; border:1px solid var(--line); border-radius:9px;
     padding:9px 11px; text-align:center;
   }
-  .coverage-badge b{color:var(--gold-2);}
+  .coverage-badge b{color:var(--accent-dark);}
 
   .total-bar{
-    margin-top:16px; background:#0a1730; border:1px solid var(--line); border-radius:14px;
+    margin-top:16px; background:var(--dark-bar); border:1px solid var(--dark-bar); border-radius:14px;
     padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
   }
-  .total-bar .tk{font-size:12.5px; color:var(--text-lo); font-weight:600;}
-  .total-bar .tv{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:22px; color:var(--gold-2);}
+  .total-bar .tk{font-size:12.5px; color:#a9c9bc; font-weight:600;}
+  .total-bar .tv{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:22px; color:#ffffff;}
 
   .note{
     font-size:11.5px; color:var(--text-dim); line-height:1.6; margin-top:14px;
@@ -143,12 +149,12 @@
   .actions-row{display:flex; gap:10px; margin-top:14px;}
   .btn-clear{
     flex:0 0 auto; padding:14px 18px; border-radius:12px; border:1px solid var(--line);
-    background:#0d1e40; color:var(--text-lo); font-weight:600; font-size:13.5px; cursor:pointer;
+    background:#f4faf7; color:var(--text-lo); font-weight:600; font-size:13.5px; cursor:pointer;
   }
   .btn-submit{
     flex:1; padding:14px; border:none; border-radius:12px;
-    background:linear-gradient(135deg, var(--gold-1), var(--gold-3));
-    color:#241300; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px; cursor:pointer;
+    background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color:#ffffff; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px; cursor:pointer;
     transition:opacity .15s;
   }
   .btn-submit:disabled{opacity:.4; cursor:not-allowed;}
@@ -158,9 +164,26 @@
     font-size:13px; text-align:center; font-weight:600; line-height:1.6;
   }
   .status-box.show{display:block;}
-  .status-box.sending{background:rgba(255,178,56,.12); color:var(--gold-2); border:1px solid rgba(255,178,56,.3);}
-  .status-box.success{background:rgba(87,217,154,.12); color:var(--ok); border:1px solid rgba(87,217,154,.3);}
+  .status-box.sending{background:rgba(22,163,74,.08); color:var(--accent-dark); border:1px solid rgba(22,163,74,.25);}
+  .status-box.success{background:rgba(22,163,74,.1); color:var(--accent-dark); border:1px solid rgba(22,163,74,.3);}
   .status-box.error{background:rgba(255,107,107,.12); color:var(--danger); border:1px solid rgba(255,107,107,.3);}
+
+  .whatsapp-card{
+    margin-top:16px; background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:6px 14px; display:flex; flex-direction:column;
+  }
+  .wa-link, .fb-link{
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    font-weight:700; font-size:14px; text-decoration:none; padding:10px 0;
+  }
+  .wa-link{color:var(--accent-dark);}
+  .fb-link{color:#1877f2; border-top:1px solid var(--line);}
+  .wa-icon, .fb-icon{
+    width:30px; height:30px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;
+  }
+  .wa-icon{background:rgba(22,163,74,.12);}
+  .fb-icon{background:rgba(24,119,242,.12);}
 
   footer{text-align:center; color:var(--text-dim); font-size:11px; margin-top:30px; line-height:1.6;}
 </style>
@@ -169,20 +192,22 @@
 <div class="wrap">
 
   <div class="hero">
+    <div class="logo">🖨️</div>
     <h1>Hall Printing Service</h1>
     <p>Fast • Reliable • Affordable Printing</p>
-    <div class="sub">Print your documents in just a few clicks.</div>
+    <div class="sub">Print your documents in just a few clicks. এখন একসাথে একাধিক ফাইল আপলোড করা যায়।</div>
   </div>
 
   <div class="card">
 
     <label for="custName">Customer Name</label>
-    <input type="text" id="custName" placeholder="Enter your name">
+    <input type="text" id="custName" placeholder="আপনার নাম লিখুন">
 
     <div class="dropzone" id="dropzone">
       <span class="ic">📄</span>
       <div class="t1">Click to upload files</div>
       <div class="t2">PDF &amp; Images (Max 10MB) A4 Size Only</div>
+      <div class="t3">একাধিক ফাইল সাপোর্টেড</div>
       <input type="file" id="fileInput" accept="application/pdf,image/*" multiple style="display:none">
     </div>
 
@@ -194,8 +219,8 @@
     <div class="checkrow" id="collectLaterRow">
       <input type="checkbox" id="collectLater">
       <div>
-        <div class="ctext">I will not collect the print now</div>
-        <div class="csub">I'm submitting the order now. I'll collect the print later.</div>
+        <div class="ctext">প্রিন্ট এখনই সংগ্রহ করবো না</div>
+        <div class="csub">অর্ডার সাবমিট করছি, প্রিন্ট পরে এসে সংগ্রহ করবো।</div>
       </div>
     </div>
   </div>
@@ -210,7 +235,19 @@
     <button class="btn-submit" id="submitBtn" disabled>Submit Order →</button>
   </div>
 
+  <div class="submit-hint" id="submitHint">নাম দিন, একটি বা একাধিক ফাইল আপলোড করুন এবং প্রতিটির জন্য Print Mode বেছে নিন। এক ক্লিকেই সব অর্ডার প্রিন্টারের কাছে চলে যাবে।</div>
   <div class="status-box" id="statusBox"></div>
+
+  <div class="whatsapp-card">
+    <a class="wa-link" href="https://wa.me/8801521794786" target="_blank" rel="noopener">
+      <span class="wa-icon">💬</span>
+      <span>Contact us on WhatsApp</span>
+    </a>
+    <a class="fb-link" href="https://www.facebook.com/kmmurchalin144" target="_blank" rel="noopener">
+      <span class="fb-icon">📘</span>
+      <span>Message us on Facebook</span>
+    </a>
+  </div>
 
   <footer>© 2026 Hall Printing Service. All Rights Reserved.</footer>
 </div>
@@ -219,7 +256,7 @@
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAeph68c6elA2H4F2bRnj-10ExTqEsSyd4wjM51AcYR_igfKwNGsNNAd77NzZcU75swQ/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwGwthsCCAxH0DX2-ueLDSBW0JJuJOULqtkghDlPmhvdVnIS3nsHy5mhuSPnzFyOzg/exec";
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('fileInput');
@@ -286,7 +323,7 @@ function analyzeColor(ctx, w, h){
 }
 
 function optionsHTML(selectedValue){
-  let html = `<option value="" disabled ${!selectedValue ? 'selected' : ''}>Select</option>`;
+  let html = `<option value="" disabled ${!selectedValue ? 'selected' : ''}>বেছে নিন</option>`;
   PRINT_TYPES.forEach(pt => {
     html += `<option value="${esc(pt.value)}" ${pt.value === selectedValue ? 'selected' : ''}>${esc(pt.value)}</option>`;
   });
@@ -322,7 +359,7 @@ function renderCard(entry){
           <select class="printType">${optionsHTML(entry.printType)}</select>
         </div>
       </div>
-      <div class="coverage-badge">Scanning...</div>
+      <div class="coverage-badge">স্ক্যান হচ্ছে…</div>
     </div>
   `;
   filesList.appendChild(div);
@@ -345,19 +382,19 @@ function recalcOne(entry){
   entry.copies = copies;
 
   if (entry.status === 'scanning'){
-    entry.badgeText = 'Scanning...';
+    entry.badgeText = 'স্ক্যান হচ্ছে…';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
   if (entry.status === 'error'){
-    entry.badgeText = 'There was a problem scanning the file.';
+    entry.badgeText = 'ফাইল স্ক্যান করতে সমস্যা হয়েছে।';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
 
   const pt = PRINT_TYPES.find(p => p.value === entry.printType);
   if (!pt){
-    entry.badgeText = entry.pageColorPercents.length ? 'Select a Print Type' : 'File is uploading...';
+    entry.badgeText = entry.pageColorPercents.length ? 'Print Type বেছে নিন' : 'ফাইল আপলোড হচ্ছে…';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
@@ -366,13 +403,13 @@ function recalcOne(entry){
     entry.total = pt.min * copies;
     entry.price = pt.min;
     entry.pageCountUsed = copies;
-    entry.badgeText = `Flat rate <b>৳${pt.min.toFixed(1)}/copy</b> — No color scan required`;
+    entry.badgeText = `Flat rate <b>৳${pt.min.toFixed(1)}/copy</b> — কোনো color scan লাগবে না`;
     entry.ready = true;
     return;
   }
 
   if (!entry.pageColorPercents.length){
-    entry.badgeText = 'Please upload a file...';
+    entry.badgeText = 'ফাইল আপলোড করুন…';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
@@ -449,7 +486,7 @@ async function scanFile(entry){
         const ctx = canvas.getContext('2d');
         await page.render({canvasContext: ctx, viewport: vp}).promise;
         entry.pageColorPercents.push(analyzeColor(ctx, canvas.width, canvas.height));
-        entry.badgeText = `Scanning... (${i}/${pdf.numPages})`;
+        entry.badgeText = `স্ক্যান হচ্ছে… (${i}/${pdf.numPages})`;
         updateCardUI(entry);
       }
     } else if (file.type.startsWith('image/')){
@@ -477,11 +514,11 @@ async function addFiles(fileList){
   const arr = Array.from(fileList);
   for (const file of arr){
     if (!(file.type === 'application/pdf' || file.type.startsWith('image/'))){
-      alert(`"${file.name}" Unsupported format. Please upload only PDF or Image files.`);
+      alert(`"${file.name}" সমর্থিত ফরম্যাট নয়। শুধু PDF অথবা Image দিন।`);
       continue;
     }
     if (file.size > 10 * 1024 * 1024){
-      alert(`"${file.name}" Its size exceeds 10 MB.`);
+      alert(`"${file.name}" এর সাইজ ১০MB এর বেশি।`);
       continue;
     }
     const entry = {
@@ -494,7 +531,7 @@ async function addFiles(fileList){
       status: 'scanning',
       ready: false,
       total: 0, price: 0, pageCountUsed: 0,
-      badgeText: 'Scanning...'
+      badgeText: 'স্ক্যান হচ্ছে…'
     };
     filesData.push(entry);
     renderCard(entry);
@@ -604,8 +641,8 @@ submitBtn.addEventListener('click', async () => {
   };
 
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
-  setStatus('sending', 'Sending order...');
+  submitBtn.textContent = 'পাঠানো হচ্ছে…';
+  setStatus('sending', 'অর্ডার পাঠানো হচ্ছে…');
 
   try {
     const res = await fetch(APPS_SCRIPT_URL, {
@@ -616,7 +653,7 @@ submitBtn.addEventListener('click', async () => {
     const result = await res.json();
 
     if (result.status === 'ok') {
-      setStatus('success', `✅ Order submitted successfully! Total: ৳${payload.totalBill}`);
+      setStatus('success', `✅ অর্ডার সফলভাবে জমা হয়েছে! মোট: ৳${payload.totalBill}`);
       submitBtn.textContent = 'Submit Order →';
       resetForm();
     } else {
@@ -624,7 +661,7 @@ submitBtn.addEventListener('click', async () => {
     }
   } catch (err) {
     console.error(err);
-    setStatus('error', '❌ Failed to submit. Please try again.');
+    setStatus('error', '❌ সাবমিট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
     submitBtn.textContent = 'Submit Order →';
     submitBtn.disabled = false;
   }
