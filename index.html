@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HallPrintingService</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0a1730;
+    --navy-mid:#122a52;
+    --card:#132b56;
+    --line:#28416f;
+    --gold-1:#ffe08a;
+    --gold-2:#ffb238;
+    --gold-3:#ff8a1f;
+    --text-hi:#f4f7ff;
+    --text-lo:#93a6cf;
+    --text-dim:#5f74a0;
+    --danger:#ff6b6b;
+    --ok:#57d99a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:linear-gradient(180deg, var(--navy-deep) 0%, #0d1c3c 45%, #0a1730 100%);
+    min-height:100vh;
+    font-family:'Inter',sans-serif;
+    color:var(--text-hi);
+  }
+  .wrap{max-width:420px; margin:0 auto; padding:0 16px 50px;}
+
+  .hero{text-align:center; padding:28px 0 10px;}
+  .hero .logo{font-size:34px;}
+  .hero h1{
+    font-family:'Baloo 2', sans-serif; font-weight:800;
+    color:var(--gold-1); font-size:19px; margin:8px 0 0;
+  }
+  .hero p{
+    font-family:'Baloo 2', sans-serif; font-weight:600;
+    color:var(--gold-1); letter-spacing:.03em; font-size:13.5px;
+    margin:8px 0 0; opacity:.9;
+  }
+  .hero .sub{
+    color:var(--text-lo); font-size:12.5px; font-weight:400;
+    max-width:340px; margin:8px auto 0; line-height:1.6;
+  }
+
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:18px; margin-top:14px;
+  }
+
+  label{display:block; font-size:12px; color:var(--text-lo); margin:14px 0 6px; font-weight:600;}
+  label:first-of-type{margin-top:0;}
+
+  input[type=text], select{
+    width:100%; padding:12px 13px; border-radius:11px;
+    background:#0d1e40; border:1px solid var(--line); color:var(--text-hi);
+    font-family:'Inter',sans-serif; font-size:14.5px; outline:none; appearance:none;
+  }
+  input[type=text]:focus, select:focus{border-color:var(--gold-2);}
+  select{
+    background-image:linear-gradient(45deg, transparent 50%, var(--gold-2) 50%), linear-gradient(135deg, var(--gold-2) 50%, transparent 50%);
+    background-position:calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size:5px 5px, 5px 5px; background-repeat:no-repeat; cursor:pointer;
+  }
+
+  .checkrow{
+    display:flex; align-items:flex-start; gap:10px; margin-top:16px;
+    padding:12px 13px; background:#0d1e40; border:1px solid var(--line); border-radius:11px;
+    cursor:pointer;
+  }
+  .checkrow input{margin-top:2px; width:16px; height:16px; accent-color:var(--gold-2); flex-shrink:0;}
+  .checkrow .ctext{font-size:13px; font-weight:600; color:var(--text-hi);}
+  .checkrow .csub{font-size:11.5px; color:var(--text-dim); margin-top:2px; line-height:1.5;}
+
+  .dropzone{
+    margin-top:16px; border:1.5px dashed var(--line); border-radius:14px; padding:26px 16px;
+    text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+    background:rgba(255,255,255,.015);
+  }
+  .dropzone.drag{border-color:var(--gold-2); background:rgba(255,178,56,.06);}
+  .dropzone .ic{font-size:26px; margin-bottom:8px; display:block;}
+  .dropzone .t1{font-size:13.5px; font-weight:600;}
+  .dropzone .t2{font-size:11.5px; color:var(--text-dim); margin-top:4px;}
+  .dropzone .t3{
+    display:inline-block; margin-top:8px; font-size:10.5px; font-weight:700;
+    color:var(--gold-2); background:rgba(255,178,56,.1); border:1px solid rgba(255,178,56,.3);
+    border-radius:20px; padding:3px 10px;
+  }
+
+  #filesList{margin-top:16px;}
+  .file-card{margin-top:14px;}
+  .file-card:first-child{margin-top:16px;}
+  .file-head{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#0d1e40; border:1px solid var(--line); border-radius:11px 11px 0 0;
+    padding:11px 13px; font-size:13px;
+  }
+  .file-head .fname{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:210px; font-weight:600;}
+  .file-head .fsize{color:var(--text-dim); font-size:11.5px; flex-shrink:0;}
+  .file-head .rm{color:var(--danger); cursor:pointer; font-weight:700; margin-left:8px; flex-shrink:0;
+    width:22px; height:22px; border-radius:50%; background:rgba(255,107,107,.12);
+    display:flex; align-items:center; justify-content:center;}
+
+  .file-body{
+    border:1px solid var(--line); border-top:none; border-radius:0 0 11px 11px;
+    padding:14px 13px 4px;
+  }
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .field-mini label{margin:0 0 6px;}
+  .stepper{display:flex; align-items:center; gap:8px;}
+  .stepper button{
+    width:36px; height:38px; border-radius:9px; border:1px solid var(--line);
+    background:#0d1e40; color:var(--gold-1); font-size:17px; cursor:pointer;
+  }
+  .stepper input{width:100%; text-align:center; padding:9px 4px;}
+
+  .coverage-badge{
+    margin:12px 0 6px; font-size:12px; color:var(--text-lo);
+    background:#0d1e40; border:1px solid var(--line); border-radius:9px;
+    padding:9px 11px; text-align:center;
+  }
+  .coverage-badge b{color:var(--gold-2);}
+
+  .total-bar{
+    margin-top:16px; background:#0a1730; border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .total-bar .tk{font-size:12.5px; color:var(--text-lo); font-weight:600;}
+  .total-bar .tv{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:22px; color:var(--gold-2);}
+
+  .note{
+    font-size:11.5px; color:var(--text-dim); line-height:1.6; margin-top:14px;
+    padding-top:12px; border-top:1px dashed var(--line);
+  }
+  .note b{color:var(--text-lo);}
+
+  .submit-hint{font-size:11px; color:var(--text-dim); text-align:center; margin-top:10px; line-height:1.6;}
+
+  .actions-row{display:flex; gap:10px; margin-top:14px;}
+  .btn-clear{
+    flex:0 0 auto; padding:14px 18px; border-radius:12px; border:1px solid var(--line);
+    background:#0d1e40; color:var(--text-lo); font-weight:600; font-size:13.5px; cursor:pointer;
+  }
+  .btn-submit{
+    flex:1; padding:14px; border:none; border-radius:12px;
+    background:linear-gradient(135deg, var(--gold-1), var(--gold-3));
+    color:#241300; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px; cursor:pointer;
+    transition:opacity .15s;
+  }
+  .btn-submit:disabled{opacity:.4; cursor:not-allowed;}
+
+  .status-box{
+    display:none; margin-top:14px; padding:12px 14px; border-radius:12px;
+    font-size:13px; text-align:center; font-weight:600; line-height:1.6;
+  }
+  .status-box.show{display:block;}
+  .status-box.sending{background:rgba(255,178,56,.12); color:var(--gold-2); border:1px solid rgba(255,178,56,.3);}
+  .status-box.success{background:rgba(87,217,154,.12); color:var(--ok); border:1px solid rgba(87,217,154,.3);}
+  .status-box.error{background:rgba(255,107,107,.12); color:var(--danger); border:1px solid rgba(255,107,107,.3);}
+
+  footer{text-align:center; color:var(--text-dim); font-size:11px; margin-top:30px; line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Hall Printing Service</h1>
+    <p>Fast • Reliable • Affordable Printing</p>
+    <div class="sub">Print your documents in just a few clicks.</div>
+  </div>
+
+  <div class="card">
+
+    <label for="custName">Customer Name</label>
+    <input type="text" id="custName" placeholder="আপনার নাম লিখুন">
+
+    <div class="dropzone" id="dropzone">
+      <span class="ic">📄</span>
+      <div class="t1">Click to upload files</div>
+      <div class="t2">PDF &amp; Images (Max 10MB) A4 Size Only</div>
+      <input type="file" id="fileInput" accept="application/pdf,image/*" multiple style="display:none">
+    </div>
+
+    <div id="filesList"></div>
+
+    <label for="amountPaid" style="margin-top:16px;">Amount Paid (Amount Paying)</label>
+    <input type="text" id="amountPaid" placeholder="Enter amount" inputmode="numeric">
+
+    <div class="checkrow" id="collectLaterRow">
+      <input type="checkbox" id="collectLater">
+      <div>
+        <div class="ctext">প্রিন্ট এখনই সংগ্রহ করবো না</div>
+        <div class="csub">অর্ডার সাবমিট করছি, প্রিন্ট পরে এসে সংগ্রহ করবো।</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="total-bar">
+    <span class="tk">Total Estimated Cost</span>
+    <span class="tv" id="rTotal">৳0.00</span>
+  </div>
+
+  <div class="actions-row">
+    <button class="btn-clear" id="clearBtn">🗑 Clear</button>
+    <button class="btn-submit" id="submitBtn" disabled>Submit Order →</button>
+  </div>
+
+  <div class="submit-hint" id="submitHint">নাম দিন, একটি বা একাধিক ফাইল আপলোড করুন এবং প্রতিটির জন্য Print Mode বেছে নিন। এক ক্লিকেই সব অর্ডার প্রিন্টারের কাছে চলে যাবে।</div>
+  <div class="status-box" id="statusBox"></div>
+
+  <footer>© 2026 Hall Printing Service. All Rights Reserved.</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAeph68c6elA2H4F2bRnj-10ExTqEsSyd4wjM51AcYR_igfKwNGsNNAd77NzZcU75swQ/exec";
+
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const filesList = document.getElementById('filesList');
+const custNameInput = document.getElementById('custName');
+const amountPaidInput = document.getElementById('amountPaid');
+const collectLater = document.getElementById('collectLater');
+const submitBtn = document.getElementById('submitBtn');
+const clearBtn = document.getElementById('clearBtn');
+const statusBox = document.getElementById('statusBox');
+const rTotal = document.getElementById('rTotal');
+
+// ---- Print type catalogue (single source of truth for every file card) ----
+const PRINT_TYPES = [
+  { value:"B&W Single (2 tk/page)",        min:2, max:7,  unit:'page',  mode:'single' },
+  { value:"B&W Both Side (3 tk/sheet)",    min:3, max:15, unit:'sheet', mode:'both'   },
+  { value:"Color Single (3 tk/page)",      min:3, max:8,  unit:'page',  mode:'single' },
+  { value:"Color Both Side (5 tk/sheet)",  min:5, max:17, unit:'sheet', mode:'both'   },
+  { value:"Passport Photo Print (5 tk/copy)", min:5, max:5, unit:'copy', mode:'flat'  },
+];
+
+let filesData = [];      // array of file "entry" objects — one per uploaded file
+let idSeq = 0;
+let amountPaidEdited = false;
+let currentTotal = 0;
+
+function fmtSize(bytes){
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(0) + ' KB';
+  return (bytes/(1024*1024)).toFixed(2) + ' MB';
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function readAsDataURL(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImage(src){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+function analyzeColor(ctx, w, h){
+  const data = ctx.getImageData(0, 0, w, h).data;
+  let colorPixels = 0, totalPixels = 0;
+  for (let i = 0; i < data.length; i += 4){
+    const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+    if (a < 10) continue;
+    totalPixels++;
+    if (Math.max(r,g,b) - Math.min(r,g,b) > 18) colorPixels++;
+  }
+  return totalPixels === 0 ? 0 : colorPixels / totalPixels;
+}
+
+// "1-5,8,10-12" জাতীয় রেঞ্জ পার্স করে page numbers (1-indexed) এর array রিটার্ন করে।
+// খালি/অবৈধ হলে null (মানে সব পেজ ব্যবহার হবে)।
+function parseRange(rangeStr, maxPages){
+  if (!rangeStr || !rangeStr.trim() || !maxPages) return null;
+  const result = new Set();
+  rangeStr.split(',').forEach(part => {
+    part = part.trim();
+    if (!part) return;
+    const m = part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if (m){
+      let a = parseInt(m[1],10), b = parseInt(m[2],10);
+      if (a > b) [a,b] = [b,a];
+      for (let p = a; p <= b; p++) if (p >= 1 && p <= maxPages) result.add(p);
+    } else if (/^\d+$/.test(part)){
+      const p = parseInt(part,10);
+      if (p >= 1 && p <= maxPages) result.add(p);
+    }
+  });
+  return result.size ? Array.from(result).sort((a,b)=>a-b) : null;
+}
+
+function optionsHTML(selectedValue){
+  let html = `<option value="" disabled ${!selectedValue ? 'selected' : ''}>বেছে নিন</option>`;
+  PRINT_TYPES.forEach(pt => {
+    html += `<option value="${esc(pt.value)}" ${pt.value === selectedValue ? 'selected' : ''}>${esc(pt.value)}</option>`;
+  });
+  return html;
+}
+
+function renderCard(entry){
+  const div = document.createElement('div');
+  div.className = 'file-card';
+  div.dataset.id = entry.id;
+  div.innerHTML = `
+    <div class="file-head">
+      <span class="fname">${esc(entry.file.name)}</span>
+      <span class="fsize">${fmtSize(entry.file.size)}</span>
+      <span class="rm" data-action="remove">✕</span>
+    </div>
+    <div class="file-body">
+      <div class="row2">
+        <div class="field-mini">
+          <label>Pages</label>
+          <input type="text" class="pageCount" value="—" readonly>
+        </div>
+        <div class="field-mini">
+          <label>Range</label>
+          <input type="text" class="rangeInput" placeholder="e.g. 1-5">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field-mini">
+          <label>Copies</label>
+          <div class="stepper">
+            <button type="button" data-action="dec">−</button>
+            <input type="text" class="copySet" value="1" inputmode="numeric">
+            <button type="button" data-action="inc">+</button>
+          </div>
+        </div>
+        <div class="field-mini">
+          <label>Print Mode</label>
+          <select class="printType">${optionsHTML(entry.printType)}</select>
+        </div>
+      </div>
+      <div class="coverage-badge">স্ক্যান হচ্ছে…</div>
+    </div>
+  `;
+  filesList.appendChild(div);
+}
+
+function cardEl(entry){
+  return filesList.querySelector(`.file-card[data-id="${entry.id}"]`);
+}
+
+function updateCardUI(entry){
+  const card = cardEl(entry);
+  if (!card) return;
+  card.querySelector('.pageCount').value = entry.pageColorPercents.length || '—';
+  card.querySelector('.coverage-badge').innerHTML = entry.badgeText || '…';
+}
+
+// ---- Per-file cost calculation (mirrors the original single-file logic) ----
+function recalcOne(entry){
+  const copies = Math.max(1, parseInt(entry.copies) || 1);
+  entry.copies = copies;
+
+  if (entry.status === 'scanning'){
+    entry.badgeText = 'স্ক্যান হচ্ছে…';
+    entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
+    return;
+  }
+  if (entry.status === 'error'){
+    entry.badgeText = 'ফাইল স্ক্যান করতে সমস্যা হয়েছে।';
+    entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
+    return;
+  }
+
+  const pt = PRINT_TYPES.find(p => p.value === entry.printType);
+  if (!pt){
+    entry.badgeText = entry.pageColorPercents.length ? 'Print Type বেছে নিন' : 'ফাইল আপলোড হচ্ছে…';
+    entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
+    return;
+  }
+
+  if (pt.mode === 'flat'){
+    entry.total = pt.min * copies;
+    entry.price = pt.min;
+    entry.pageCountUsed = copies;
+    entry.badgeText = `Flat rate <b>৳${pt.min.toFixed(1)}/copy</b> — কোনো color scan লাগবে না`;
+    entry.ready = true;
+    return;
+  }
+
+  if (!entry.pageColorPercents.length){
+    entry.badgeText = 'ফাইল আপলোড করুন…';
+    entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
+    return;
+  }
+
+  const selectedPages = parseRange(entry.range, entry.pageColorPercents.length);
+  const percents = selectedPages ? selectedPages.map(p => entry.pageColorPercents[p-1]) : entry.pageColorPercents.slice();
+
+  let units = [];
+  if (pt.mode === 'single'){
+    percents.forEach(p => units.push(p));
+  } else {
+    for (let i = 0; i < percents.length; i += 2){
+      const a = percents[i];
+      const b = (i+1 < percents.length) ? percents[i+1] : a;
+      units.push((a+b)/2);
+    }
+  }
+
+  let subtotal = 0;
+  units.forEach(p => { subtotal += pt.min + (pt.max - pt.min) * p; });
+  const avgPercent = units.reduce((s,p) => s+p, 0) / units.length;
+  const avgPrice = subtotal / units.length;
+
+  entry.badgeText = `Color Coverage: <b>${Math.round(avgPercent*100)}%</b> • <b>৳${avgPrice.toFixed(2)}</b>/${pt.unit} avg — ${units.length} ${pt.unit}${units.length>1?'s':''}`;
+  entry.total = subtotal * copies;
+  entry.price = subtotal;
+  entry.pageCountUsed = units.length * copies;
+  entry.ready = true;
+}
+
+function recalcAll(){
+  let grandTotal = 0;
+  let allReady = filesData.length > 0;
+  filesData.forEach(entry => {
+    recalcOne(entry);
+    updateCardUI(entry);
+    if (entry.ready) grandTotal += entry.total;
+    else allReady = false;
+  });
+  currentTotal = grandTotal;
+  rTotal.textContent = `৳${grandTotal.toFixed(2)}`;
+  if (!amountPaidEdited) amountPaidInput.value = grandTotal > 0 ? grandTotal.toFixed(1) : '';
+  updateSubmitState(allReady, grandTotal);
+}
+
+function updateSubmitState(allReady, total){
+  const hasName = custNameInput.value.trim().length > 0;
+  const hasAmount = amountPaidInput.value.trim().length > 0;
+  const hasFiles = filesData.length > 0;
+  submitBtn.disabled = !(allReady && hasName && hasAmount && hasFiles && total > 0);
+}
+
+function setStatus(kind, msg){
+  statusBox.className = 'status-box show ' + kind;
+  statusBox.textContent = msg;
+}
+
+// ---- Scanning a single uploaded file (async, runs per file) ----
+async function scanFile(entry){
+  const file = entry.file;
+  try{ entry.dataUrl = await readAsDataURL(file); }
+  catch(err){ console.error('file read error', err); }
+
+  try{
+    if (file.type === 'application/pdf'){
+      const buf = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({data: buf}).promise;
+      for (let i = 1; i <= pdf.numPages; i++){
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({scale: 1});
+        const scale = 220 / Math.max(viewport.width, viewport.height);
+        const vp = page.getViewport({scale});
+        const canvas = document.createElement('canvas');
+        canvas.width = vp.width; canvas.height = vp.height;
+        const ctx = canvas.getContext('2d');
+        await page.render({canvasContext: ctx, viewport: vp}).promise;
+        entry.pageColorPercents.push(analyzeColor(ctx, canvas.width, canvas.height));
+        entry.badgeText = `স্ক্যান হচ্ছে… (${i}/${pdf.numPages})`;
+        updateCardUI(entry);
+      }
+    } else if (file.type.startsWith('image/')){
+      const url = URL.createObjectURL(file);
+      const img = await loadImage(url);
+      const scale = 220 / Math.max(img.width, img.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale; canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      entry.pageColorPercents.push(analyzeColor(ctx, canvas.width, canvas.height));
+      URL.revokeObjectURL(url);
+    } else {
+      throw new Error('unsupported type');
+    }
+    entry.status = 'ready';
+  }catch(err){
+    console.error(err);
+    entry.status = 'error';
+  }
+  recalcAll();
+}
+
+async function addFiles(fileList){
+  const arr = Array.from(fileList);
+  for (const file of arr){
+    if (!(file.type === 'application/pdf' || file.type.startsWith('image/'))){
+      alert(`"${file.name}" সমর্থিত ফরম্যাট নয়। শুধু PDF অথবা Image দিন।`);
+      continue;
+    }
+    if (file.size > 10 * 1024 * 1024){
+      alert(`"${file.name}" এর সাইজ ১০MB এর বেশি।`);
+      continue;
+    }
+    const entry = {
+      id: 'f' + (++idSeq),
+      file,
+      dataUrl: null,
+      pageColorPercents: [],
+      copies: 1,
+      printType: '',
+      range: '',
+      status: 'scanning',
+      ready: false,
+      total: 0, price: 0, pageCountUsed: 0,
+      badgeText: 'স্ক্যান হচ্ছে…'
+    };
+    filesData.push(entry);
+    renderCard(entry);
+    await scanFile(entry);
+  }
+  recalcAll();
+}
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault(); dropzone.classList.remove('drag');
+  if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e => {
+  if (e.target.files.length) addFiles(e.target.files);
+  fileInput.value = '';
+});
+
+// ---- Event delegation for per-card controls (remove / copies / range / print type) ----
+filesList.addEventListener('click', e => {
+  const card = e.target.closest('.file-card');
+  if (!card) return;
+  const entry = filesData.find(f => f.id === card.dataset.id);
+  if (!entry) return;
+  const action = e.target.dataset.action;
+  if (action === 'remove'){
+    filesData = filesData.filter(f => f.id !== entry.id);
+    card.remove();
+    recalcAll();
+  } else if (action === 'inc'){
+    entry.copies = (parseInt(entry.copies) || 1) + 1;
+    card.querySelector('.copySet').value = entry.copies;
+    recalcAll();
+  } else if (action === 'dec'){
+    entry.copies = Math.max(1, (parseInt(entry.copies) || 1) - 1);
+    card.querySelector('.copySet').value = entry.copies;
+    recalcAll();
+  }
+});
+
+filesList.addEventListener('input', e => {
+  const card = e.target.closest('.file-card');
+  if (!card) return;
+  const entry = filesData.find(f => f.id === card.dataset.id);
+  if (!entry) return;
+  if (e.target.classList.contains('copySet')){
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    entry.copies = parseInt(e.target.value) || 1;
+    recalcAll();
+  } else if (e.target.classList.contains('rangeInput')){
+    entry.range = e.target.value;
+    recalcAll();
+  }
+});
+
+filesList.addEventListener('change', e => {
+  const card = e.target.closest('.file-card');
+  if (!card) return;
+  const entry = filesData.find(f => f.id === card.dataset.id);
+  if (!entry) return;
+  if (e.target.classList.contains('printType')){
+    entry.printType = e.target.value;
+    recalcAll();
+  }
+});
+
+custNameInput.addEventListener('input', recalcAll);
+amountPaidInput.addEventListener('input', () => {
+  amountPaidInput.value = amountPaidInput.value.replace(/[^0-9.]/g, '');
+  amountPaidEdited = true;
+  updateSubmitState(filesData.length > 0 && filesData.every(f => f.ready), currentTotal);
+});
+
+function resetForm(){
+  custNameInput.value = '';
+  amountPaidInput.value = '';
+  amountPaidEdited = false;
+  collectLater.checked = false;
+  filesData = [];
+  filesList.innerHTML = '';
+  recalcAll();
+}
+
+clearBtn.addEventListener('click', () => {
+  resetForm();
+  statusBox.classList.remove('show');
+});
+
+submitBtn.addEventListener('click', async () => {
+  if (submitBtn.disabled) return;
+
+  let name = custNameInput.value.trim();
+  if (collectLater.checked) name = '[পরে নিবে] ' + name;
+
+  const payload = {
+    name: name,
+    amountPaid: amountPaidInput.value.trim(),
+    totalBill: currentTotal.toFixed(1),
+    files: filesData.map(e => ({
+      printType: e.printType,
+      copySet: e.pageCountUsed,
+      price: (e.price || 0).toFixed(1),
+      fileName: e.file.name,
+      fileMimeType: e.file.type,
+      fileBase64: e.dataUrl ? e.dataUrl.slice(e.dataUrl.indexOf(',') + 1) : ''
+    }))
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'পাঠানো হচ্ছে…';
+  setStatus('sending', 'অর্ডার পাঠানো হচ্ছে…');
+
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+
+    if (result.status === 'ok') {
+      setStatus('success', `✅ অর্ডার সফলভাবে জমা হয়েছে! মোট: ৳${payload.totalBill}`);
+      submitBtn.textContent = 'Submit Order →';
+      resetForm();
+    } else {
+      throw new Error(result.message || 'unknown error');
+    }
+  } catch (err) {
+    console.error(err);
+    setStatus('error', '❌ সাবমিট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+    submitBtn.textContent = 'Submit Order →';
+    submitBtn.disabled = false;
+  }
+});
+
+recalcAll();
+</script>
+</body>
+</html>
