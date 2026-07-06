@@ -169,22 +169,20 @@
 <div class="wrap">
 
   <div class="hero">
-    <div class="logo">🖨️</div>
     <h1>Hall Printing Service</h1>
     <p>Fast • Reliable • Affordable Printing</p>
-    <div class="sub">Print your documents in just a few clicks. এখন একসাথে একাধিক ফাইল আপলোড করা যায়।</div>
+    <div class="sub">Print your documents in just a few clicks.</div>
   </div>
 
   <div class="card">
 
     <label for="custName">Customer Name</label>
-    <input type="text" id="custName" placeholder="আপনার নাম লিখুন">
+    <input type="text" id="custName" placeholder="Enter your name">
 
     <div class="dropzone" id="dropzone">
       <span class="ic">📄</span>
       <div class="t1">Click to upload files</div>
       <div class="t2">PDF &amp; Images (Max 10MB) A4 Size Only</div>
-      <div class="t3">একাধিক ফাইল সাপোর্টেড</div>
       <input type="file" id="fileInput" accept="application/pdf,image/*" multiple style="display:none">
     </div>
 
@@ -196,8 +194,8 @@
     <div class="checkrow" id="collectLaterRow">
       <input type="checkbox" id="collectLater">
       <div>
-        <div class="ctext">প্রিন্ট এখনই সংগ্রহ করবো না</div>
-        <div class="csub">অর্ডার সাবমিট করছি, প্রিন্ট পরে এসে সংগ্রহ করবো।</div>
+        <div class="ctext">I will not collect the print now</div>
+        <div class="csub">I'm submitting the order now. I'll collect the print later.</div>
       </div>
     </div>
   </div>
@@ -212,7 +210,6 @@
     <button class="btn-submit" id="submitBtn" disabled>Submit Order →</button>
   </div>
 
-  <div class="submit-hint" id="submitHint">নাম দিন, একটি বা একাধিক ফাইল আপলোড করুন এবং প্রতিটির জন্য Print Mode বেছে নিন। এক ক্লিকেই সব অর্ডার প্রিন্টারের কাছে চলে যাবে।</div>
   <div class="status-box" id="statusBox"></div>
 
   <footer>© 2026 Hall Printing Service. All Rights Reserved.</footer>
@@ -289,7 +286,7 @@ function analyzeColor(ctx, w, h){
 }
 
 function optionsHTML(selectedValue){
-  let html = `<option value="" disabled ${!selectedValue ? 'selected' : ''}>বেছে নিন</option>`;
+  let html = `<option value="" disabled ${!selectedValue ? 'selected' : ''}>Select</option>`;
   PRINT_TYPES.forEach(pt => {
     html += `<option value="${esc(pt.value)}" ${pt.value === selectedValue ? 'selected' : ''}>${esc(pt.value)}</option>`;
   });
@@ -325,7 +322,7 @@ function renderCard(entry){
           <select class="printType">${optionsHTML(entry.printType)}</select>
         </div>
       </div>
-      <div class="coverage-badge">স্ক্যান হচ্ছে…</div>
+      <div class="coverage-badge">Scanning...</div>
     </div>
   `;
   filesList.appendChild(div);
@@ -348,19 +345,19 @@ function recalcOne(entry){
   entry.copies = copies;
 
   if (entry.status === 'scanning'){
-    entry.badgeText = 'স্ক্যান হচ্ছে…';
+    entry.badgeText = 'Scanning...';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
   if (entry.status === 'error'){
-    entry.badgeText = 'ফাইল স্ক্যান করতে সমস্যা হয়েছে।';
+    entry.badgeText = 'There was a problem scanning the file.';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
 
   const pt = PRINT_TYPES.find(p => p.value === entry.printType);
   if (!pt){
-    entry.badgeText = entry.pageColorPercents.length ? 'Print Type বেছে নিন' : 'ফাইল আপলোড হচ্ছে…';
+    entry.badgeText = entry.pageColorPercents.length ? 'Select a Print Type' : 'File is uploading...';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
@@ -369,13 +366,13 @@ function recalcOne(entry){
     entry.total = pt.min * copies;
     entry.price = pt.min;
     entry.pageCountUsed = copies;
-    entry.badgeText = `Flat rate <b>৳${pt.min.toFixed(1)}/copy</b> — কোনো color scan লাগবে না`;
+    entry.badgeText = `Flat rate <b>৳${pt.min.toFixed(1)}/copy</b> — No color scan required`;
     entry.ready = true;
     return;
   }
 
   if (!entry.pageColorPercents.length){
-    entry.badgeText = 'ফাইল আপলোড করুন…';
+    entry.badgeText = 'Please upload a file...';
     entry.total = 0; entry.price = 0; entry.pageCountUsed = 0; entry.ready = false;
     return;
   }
@@ -452,7 +449,7 @@ async function scanFile(entry){
         const ctx = canvas.getContext('2d');
         await page.render({canvasContext: ctx, viewport: vp}).promise;
         entry.pageColorPercents.push(analyzeColor(ctx, canvas.width, canvas.height));
-        entry.badgeText = `স্ক্যান হচ্ছে… (${i}/${pdf.numPages})`;
+        entry.badgeText = `Scanning... (${i}/${pdf.numPages})`;
         updateCardUI(entry);
       }
     } else if (file.type.startsWith('image/')){
@@ -480,11 +477,11 @@ async function addFiles(fileList){
   const arr = Array.from(fileList);
   for (const file of arr){
     if (!(file.type === 'application/pdf' || file.type.startsWith('image/'))){
-      alert(`"${file.name}" সমর্থিত ফরম্যাট নয়। শুধু PDF অথবা Image দিন।`);
+      alert(`"${file.name}" Unsupported format. Please upload only PDF or Image files.`);
       continue;
     }
     if (file.size > 10 * 1024 * 1024){
-      alert(`"${file.name}" এর সাইজ ১০MB এর বেশি।`);
+      alert(`"${file.name}" Its size exceeds 10 MB.`);
       continue;
     }
     const entry = {
@@ -497,7 +494,7 @@ async function addFiles(fileList){
       status: 'scanning',
       ready: false,
       total: 0, price: 0, pageCountUsed: 0,
-      badgeText: 'স্ক্যান হচ্ছে…'
+      badgeText: 'Scanning...'
     };
     filesData.push(entry);
     renderCard(entry);
@@ -607,8 +604,8 @@ submitBtn.addEventListener('click', async () => {
   };
 
   submitBtn.disabled = true;
-  submitBtn.textContent = 'পাঠানো হচ্ছে…';
-  setStatus('sending', 'অর্ডার পাঠানো হচ্ছে…');
+  submitBtn.textContent = 'Sending...';
+  setStatus('sending', 'Sending order...');
 
   try {
     const res = await fetch(APPS_SCRIPT_URL, {
@@ -619,7 +616,7 @@ submitBtn.addEventListener('click', async () => {
     const result = await res.json();
 
     if (result.status === 'ok') {
-      setStatus('success', `✅ অর্ডার সফলভাবে জমা হয়েছে! মোট: ৳${payload.totalBill}`);
+      setStatus('success', `✅ Order submitted successfully! Total: ৳${payload.totalBill}`);
       submitBtn.textContent = 'Submit Order →';
       resetForm();
     } else {
@@ -627,7 +624,7 @@ submitBtn.addEventListener('click', async () => {
     }
   } catch (err) {
     console.error(err);
-    setStatus('error', '❌ সাবমিট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+    setStatus('error', '❌ Failed to submit. Please try again.');
     submitBtn.textContent = 'Submit Order →';
     submitBtn.disabled = false;
   }
