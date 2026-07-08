@@ -501,8 +501,8 @@ async function addFiles(fileList){
       alert(`"${file.name}" সমর্থিত ফরম্যাট নয়। শুধু PDF অথবা Image দিন।`);
       continue;
     }
-    if (file.size > 200 * 1024 * 1024){
-      alert(`"${file.name}" এর সাইজ 200MB এর বেশি।`);
+    if (file.size > 100 * 1024 * 1024){
+      alert(`"${file.name}" এর সাইজ 100MB এর বেশি।`);
       continue;
     }
     const entry = {
